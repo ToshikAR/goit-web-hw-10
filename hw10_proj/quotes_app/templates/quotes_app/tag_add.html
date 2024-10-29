@@ -1,0 +1,41 @@
+{% extends 'quotes_app/base.html' %}
+
+
+{% block content %}
+
+<div class="container mt-3">
+    <h2 class="text-center mb-5">Tag Add</h2>
+
+    {% if messages %}
+    <div class="message">
+        {% for message in messages %}
+            <span {% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>
+                {{ message }}
+            </span>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if form.errors and form.non_field_errors %}
+    <div class="alert alert-danger" role="alert">
+        {{ form.non_field_errors }}
+    </div>
+    {% endif %}
+
+    <form action="{% url 'quotes_app:tag-add' %}" method="post">
+        {% csrf_token %}
+        <div class="form-floating mb-3">
+            {{ form.name }}
+            <label for="name">Name:</label>
+            <span>{{ form.errors.name }}</span>
+        </div>
+    
+        <div class="d-flex flex-column flex-md-row justify-content-between gap-2">
+            <button type="submit" class="btn btn-outline-success me-md-2" style="flex: 2;">Submit</button>
+            <button type="reset" class="btn btn-secondary" style="flex: 0.5;">Reset</button>
+        </div>
+    </form>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'quotes_app/base.html' %}
+{% load extract %}
+
+{% block content %}
+<h3>
+    Viewing tag: 
+    <a href="/tag/change">{{tag_}}</a>
+</h3>
+
+<div class="col-md-8">
+    {% for quote in quotes %}
+    <div class="quote">
+        <span class="text" itemprop="text">
+            {{quote.quote}}
+        </span>
+        <span>by <small class="author" itemprop="author">
+            {{quote.author}}
+        </small>
+        <a href="{% url 'quotes_app:author' quote.author.id %}">(about)</a>
+        </span>
+        <div class="tags">
+            Tags:
+            {% for tag in quote.tags.all %}
+            <a class="tag" href="{% url 'quotes_app:tags' tag %}">{{tag}}</a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+    
+{% endblock%}

@@ -1,0 +1,67 @@
+{% extends 'quotes_app/base.html' %}
+{% load extract %}
+
+{% block content %}
+
+<div class="row">
+    <!-- <p>Количество цитат: {{ quotes|length }}</p> -->
+    <div class="col-md-8">
+        {% for quote in quotes %}
+        <div class="quote">
+            <span class="text" itemprop="text">
+                {{quote.quote}}
+            </span>
+            <span>by <small class="author" itemprop="author">
+                {{quote.author}}
+            </small>
+            <a href="{% url 'quotes_app:author' quote.author.id %}">(about)</a>
+            </span>
+            <div class="tags">
+                Tags:
+                {% for tag in quote.tags.all %}
+                <a class="tag" href="{% url 'quotes_app:tags' tag %}">{{tag}}</a>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+
+        <nav>
+            <ul class="pager">  
+                <li class="previous">
+                    <a class="{% if not quotes.has_previous %} disabled {% endif %}"
+                       href="{% if quotes.has_previous %} {% url 'quotes_app:root_paginate' quotes.previous_page_number %} {% else %} # {% endif %}">
+                        <span aria-hidden="true">←</span> Previous
+                    </a>
+                </li>
+                <li class="next">
+                    <a class="{% if not quotes.has_next %} disabled {% endif %}"
+                       href="{% if quotes.has_next %}{% url 'quotes_app:root_paginate' quotes.next_page_number %}{% else %}#{% endif %}"> 
+                        Next <span aria-hidden="true">→</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <div class="col-md-4 tags-box">
+        <h2 class="text-center mb-3">Top Ten tags</h2>
+        {% for tag in top_tags %}
+            <div class="text-end mb-3">
+                <a class="tag"
+                    style="font-size: {% if forloop.counter0 == 0 %} 28px {% endif %}
+                                      {% if forloop.counter0 == 1 %} 26px {% endif %}
+                                      {% if forloop.counter0 == 2 %} 26px {% endif %}
+                                      {% if forloop.counter0 == 3 %} 24px {% endif %}
+                                      {% if forloop.counter0 == 4 %} 22px {% endif %}
+                                      {% if forloop.counter0 == 5 %} 14px {% endif %}
+                                      {% if forloop.counter0 == 6 %} 10px {% endif %}
+                                      {% if forloop.counter0 == 7 %} 8px {% endif %}
+                                      {% if forloop.counter0 == 8 %} 8px {% endif %}
+                                      {% if forloop.counter0 == 9 %} 6px {% endif %}"
+                    href="{% url 'quotes_app:tags' tag %}">{{ tag }}
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
