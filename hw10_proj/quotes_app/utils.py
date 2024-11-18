@@ -1,4 +1,5 @@
-from dotenv import load_dotenv
+from pathlib import Path
+import environ
 import os
 from datetime import datetime
 import django
@@ -9,18 +10,16 @@ django.setup()
 from pymongo import MongoClient
 from .models import Author, Quote, Tag
 
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+env = environ.Env()
+environ.Env.read_env(BASE_DIR / ".env")
+
 
 def get_mongodb():
-    load_dotenv()
-
-    user = os.getenv("MONGODB08_USER")
-    password = os.getenv("MONGODB08_PASSWORD")
-    base = os.getenv("MONGODB08_DB")
-    domain = os.getenv("MONGODB08_HOST")
-
-    uri = f"mongodb+srv://{user}:{password}@{domain}/?retryWrites=true&w=majority&appName=Cluster0"
+    uri = env("URI")
     client = MongoClient(uri)
-    db = client[base]
+    db = client[env("MONGODB08_DB")]
 
     return db
 

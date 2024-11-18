@@ -12,16 +12,19 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+env = environ.Env()
+environ.Env.read_env(BASE_DIR / ".env")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-h84xv^)z23jt)j22nd7sfx^c%)tyuiv*#dqqq+y0k7dlx9h&wo"
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -72,9 +75,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "hw10_proj.wsgi.application"
 
-from dotenv import load_dotenv
-
-load_dotenv()
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -82,11 +82,11 @@ load_dotenv()
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("POSTQ_DB"),
-        "USER": os.getenv("POSTQ_USER"),
-        "PASSWORD": os.getenv("POSTQ_PASSWORD"),
-        "HOST": os.getenv("POSTQ_HOST"),
-        "PORT": os.getenv("POSTQ_PORT"),
+        "NAME": env("POSTQ_DB"),
+        "USER": env("POSTQ_USER"),
+        "PASSWORD": env("POSTQ_PASSWORD"),
+        "HOST": env("POSTQ_HOST"),
+        "PORT": env("POSTQ_PORT"),
     }
 }
 
@@ -133,3 +133,15 @@ LOGIN_URL = "/user_app/signin"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Email sending letters
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = env("EMAIL_HOST")
+EMAIL_PORT = env("EMAIL_PORT")
+EMAIL_STARTTLS = False
+EMAIL_USE_SSL = True
+EMAIL_USE_TLS = False
+EMAIL_HOST_USER = env("EMAIL_USERNAME")
+EMAIL_HOST_PASSWORD = env("EMAIL_PASSWORD")
+DEFAULT_FROM_EMAIL = env("EMAIL_FROM")

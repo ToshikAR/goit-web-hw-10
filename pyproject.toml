@@ -13,6 +13,7 @@ pymongo = "^4.10.1"
 python-dotenv = "^1.0.1"
 psycopg2-binary = "^2.9.10"
 scrapy = "^2.11.2"
+django-environ = "^0.11.2"
 
 
 [build-system]

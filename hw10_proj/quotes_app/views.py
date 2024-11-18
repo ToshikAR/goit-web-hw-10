@@ -1,3 +1,5 @@
+from unittest import loader
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from django.views import View
@@ -131,3 +133,8 @@ def fillAll(request):
 def scrap(request):
     start_scrap()
     return redirect(to="quotes_app:root")
+
+
+def testing(request):
+    template = loader.get_template("user_app/usertest.html")
+    return HttpResponse(template.render())

@@ -1,0 +1,12 @@
+
+
+
+{%if user.is_authenticated %}
+<div class="text-end mb-3 text-secondary">
+	<span class="text-sm-end">User: {{ user.username }}</span><br>
+	<span class="text-sm-end">Email: {{ user.email }}</span>
+</div>
+{% endif %}
+
+
+
